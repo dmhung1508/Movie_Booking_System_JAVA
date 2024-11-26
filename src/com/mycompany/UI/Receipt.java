@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.*;
 import static com.mycompany.UI.process_functions.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 public class Receipt 
 {
     public static JFrame myFrame = new JFrame("Movie Ticket System");
@@ -116,37 +117,37 @@ public class Receipt
     }
     
     
-    public static void right_Panel(Movie moviee, String usrn)
+    public static void right_Panel(Movie moviee, String usrn) 
     {
         CinemaManager cm = new CinemaManager();
         ArrayList<Cinema> arl_cinema = new ArrayList<>(cm.getAllCinemas());
-        
+
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(null);
         rightPanel.setBounds(151, 0, 1000, 750);
         rightPanel.setBackground(Color.decode("#000000"));
-        // left of right_Panel
+
+        // Left of right_Panel
         JPanel lPanel = new JPanel();
-        JPanel rPanel = new JPanel();
         lPanel.setBounds(0, 0, 300, 750);
         lPanel.setBackground(Color.BLACK);
-        // Lấy ảnh và tên của phim đã chọn
-        lPanel.add(processing_image(moviee.getImagePath(), 10, 20, 150, 200));
+        lPanel.add(processing_image_from_url(moviee.getImagePath(), 10, 20, 150, 200));
         lPanel.add(processing_label(moviee.getTitle(), 680, 190, 180, 50));
         rightPanel.add(lPanel);
-        
+
+        // Right of right_Panel
+        JPanel rPanel = new JPanel();
         rPanel.setBounds(301, 0, 700, 750);
         rPanel.setBackground(Color.DARK_GRAY);
         rPanel.setLayout(null);
-        // set day
+
         JPanel sub0 = new JPanel();
         sub0.setLayout(null);
-        sub0.setBounds(0, 0, 700, 150);
         sub0.setBackground(Color.BLACK);
-        ArrayList<String> dateList = new ArrayList<>(moviee.getShowDates());
-        int x_day = 10 , y_day = 10, w_day = 100 , h_day = 20;
-        int x_date = 10,y_date = 50, w_date = 50, h_date = 30;
-        for(String i: dateList)
+        int x_day = 10, y_day = 10, w_day = 100, h_day = 20;
+        int x_date = 10, y_date = 50, w_date = 50, h_date = 30;
+
+        for (String i : moviee.getShowDates()) 
         {
             String[] day = i.split("\\s+");
             sub0.add(function_day(day[0], x_day, y_day, w_day, h_day));
@@ -156,28 +157,60 @@ public class Receipt
             x_day += 110;
             x_date += 110;
         }
-        sub0.add(setLine(10, 120, 650, 1));
-        // set location
+
+        sub0.setPreferredSize(new Dimension(Math.max(700, x_date), 150));
+        JScrollPane dayScrollPane = new JScrollPane(sub0);
+        dayScrollPane.setBounds(0, 0, 700, 150);
+        dayScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        dayScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        // chinh kich thuoc cua scroll bar
+        JScrollBar verticalScrollBar = dayScrollPane.getVerticalScrollBar();
+        JScrollBar horizontalScrollBar = dayScrollPane.getHorizontalScrollBar();
+        verticalScrollBar.setPreferredSize(new Dimension(4, 0)); 
+        horizontalScrollBar.setPreferredSize(new Dimension(2, 4)); 
+        // chinh mau 
+        verticalScrollBar.setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = Color.YELLOW; 
+                this.trackColor = Color.GRAY; 
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return super.createDecreaseButton(orientation);
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return super.createIncreaseButton(orientation);
+            }
+        });
+
+        horizontalScrollBar.setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = Color.black; 
+                this.trackColor = Color.black; 
+            }
+        });
+        rPanel.add(dayScrollPane);
+
         JPanel sub1 = new JPanel();
         sub1.setLayout(null);
-        sub1.setBounds(0, 130, 700, 650);
         sub1.setBackground(Color.BLACK);
-        ArrayList<String> cname = new ArrayList<>(moviee.getCinemas());
-        
-        int x_des = 10, y_des = 10, w_des = 300, h_des = 30;
-        for(String i: cname)
-        {
-            sub1.add(function_day(i, x_des, y_des, w_des, h_des));
+        int y_des = 10, w_des = 300, h_des = 30;
+        int y_time = 50, w_time = 100, h_time = 50, y_line = 140;
+
+        for (Cinema i : arl_cinema) {
+            JLabel cinemaLabel = new JLabel(i.getName());
+            cinemaLabel.setBounds(10, y_des, w_des, h_des);
+            cinemaLabel.setForeground(Color.WHITE);
+            sub1.add(cinemaLabel);
             y_des += 140;
-        }
-        
-        int x_time = 10, y_time = 50, w_time = 100, h_time = 50;
-        int y_line = 140;
-        for(Cinema i: arl_cinema)
-        {
-            x_time = 10;
-            for(String j: i.getShowHours())
-            {
+
+            int x_time = 10;
+            for (String j : i.getShowHours()) {
                 JButton time = setButtonTime(j, x_time, y_time, w_time, h_time);
                 sub1.add(time);
                 save_button.add(time);
@@ -189,8 +222,24 @@ public class Receipt
             y_time += 150;
         }
         
+
+        sub1.setPreferredSize(new Dimension(700, Math.max(650, y_time)));
+        JScrollPane cinemaScrollPane = new JScrollPane(sub1);
+        cinemaScrollPane.setBounds(0, 150, 700, 500);
+        cinemaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        cinemaScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        rPanel.add(cinemaScrollPane);
+
+        rightPanel.add(rPanel);
+
+        JPanel selectPanel = new JPanel();
+        selectPanel.setLayout(null);
+        selectPanel.setBounds(0, 600, 700, 150);
+        selectPanel.setBackground(Color.black);
+        rPanel.add(selectPanel);
+        
         JButton selectButton = new JButton("Select");
-        selectButton.setBounds(250, 500, 100, 30);
+        selectButton.setBounds(300, 65, 100, 30);
         selectButton.setBackground(Color.YELLOW);
         selectButton.setFont(new Font("Arial", Font.BOLD, 12));
         selectButton.setVisible(false);
@@ -206,11 +255,7 @@ public class Receipt
                     com.mycompany.UI.SeatUI.chooseSeat(moviee, name1, usrn1);
                 }
             });
-        sub1.add(selectButton);
-        rPanel.add(sub0);
-        rPanel.add(sub1);
-        
-        rightPanel.add(rPanel);
+
         Runnable checkAndShowNewButton = () -> {
             boolean buttonSelected = save_button.stream()
                     .anyMatch(btn -> btn.getBackground() == Color.YELLOW);
@@ -255,9 +300,13 @@ public class Receipt
             });
         }
 
+        selectPanel.add(selectButton);
+        
+
         myFrame.add(rightPanel);
-//        return rightPanel;
     }
+
+
     
 }
 

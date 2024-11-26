@@ -176,13 +176,18 @@ public class EachMovie
         avt.setLayout(null);
         avt.setBounds(40, 20, 200, 300);
         avt.setBackground(Color.black);
-        avt.add(processing_image(moviee.getImagePath(), 00, 0, 200, 250));
+        avt.add(processing_image_from_url(moviee.getImagePath(), 00, 0, 200, 250));
         JLabel reviews = processing_label("Review (" + String.valueOf(count_positive) + " positive reviews)", 0, 255, 200, 30);
         avt.add(reviews);
         rightPanel.add(avt);
         
         reviewTable.getColumnModel().getColumn(1).setCellRenderer(reviewRenderer);
         JScrollPane chat = new JScrollPane(reviewTable);
+        chat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        chat.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        chat.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));  // Đặt chiều rộng thanh cuộn dọc nhỏ lại
+        chat.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));  // Đặt chiều cao thanh cuộn ngang nhỏ lại
+
         chat.setBounds(40, 360, 600, 350);
 
         rightPanel.add(khung);

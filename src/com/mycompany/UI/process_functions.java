@@ -4,6 +4,7 @@ import com.mycompany.database.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 public class process_functions 
 {
     public static boolean check_is_valid(String s)
@@ -19,6 +20,25 @@ public class process_functions
         JLabel imageLabel = new JLabel(resizedImage);
         imageLabel.setBounds(x, y, w, h);
         return imageLabel;
+    }
+    public static JLabel processing_image_from_url(String url, int x, int y, int w, int h) 
+    {
+        try {
+
+            ImageIcon movie = new ImageIcon(new URL(url));
+            Image scaledImage = movie.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH); 
+            ImageIcon resizedImage = new ImageIcon(scaledImage);
+            JLabel imageLabel = new JLabel(resizedImage);
+            imageLabel.setBounds(x, y, w, h);
+            return imageLabel;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JLabel errorLabel = new JLabel("Failed to load image");
+            errorLabel.setBounds(x, y, w, h);
+            errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            errorLabel.setVerticalAlignment(SwingConstants.CENTER);
+            return errorLabel;
+        }
     }
     public static JLabel processing_label(String name, int x, int y, int w, int h)
     {
