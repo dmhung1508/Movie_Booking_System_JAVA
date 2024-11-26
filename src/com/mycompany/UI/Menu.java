@@ -129,7 +129,11 @@ public class Menu
             int x = xOffset + col * (movieWidth + gapX);
             int y = yOffset + row * (movieHeight + gapY);
 
+<<<<<<< HEAD
             movieListPanel.add(processing_image_from_url(movie.getImagePath(), x, y,
+=======
+            movieListPanel.add(processing_image(movie.getImagePath(), x, y,
+>>>>>>> 2a66908cbf5cfbd549dc5921809e512d0ace019d
                     movieWidth, movieHeight - 50));
             
             movieListPanel.add(processing_label(movie.getTitle(), x, y + movieHeight - 40,
