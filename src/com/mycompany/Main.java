@@ -12,11 +12,7 @@ public class Main
     {
           Login_Interface();
 //        FeedbackDatabase fbdtb = new FeedbackDatabase();
-<<<<<<< HEAD
 //        ArrayList<Feedback> arl_feedback = new ArrayList<>(fbdtb.getFeedbacks("End game"));
-=======
-//        ArrayList<Feedback> arl_feedback = new ArrayList<>(fbdtb.getFeedbacks("Venom: Den khi cai chet chia lia doi ta"));
->>>>>>> 2a66908cbf5cfbd549dc5921809e512d0ace019d
 //        for(Feedback i: arl_feedback)
 //        {
 //            System.out.println(i.getUser());

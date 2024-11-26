@@ -4,10 +4,7 @@ import com.mycompany.database.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
-<<<<<<< HEAD
 import java.net.URL;
-=======
->>>>>>> 2a66908cbf5cfbd549dc5921809e512d0ace019d
 public class process_functions 
 {
     public static boolean check_is_valid(String s)
@@ -24,7 +21,6 @@ public class process_functions
         imageLabel.setBounds(x, y, w, h);
         return imageLabel;
     }
-<<<<<<< HEAD
     public static JLabel processing_image_from_url(String url, int x, int y, int w, int h) 
     {
         try {
@@ -44,8 +40,6 @@ public class process_functions
             return errorLabel;
         }
     }
-=======
->>>>>>> 2a66908cbf5cfbd549dc5921809e512d0ace019d
     public static JLabel processing_label(String name, int x, int y, int w, int h)
     {
         JLabel movie_label = new JLabel(name);
